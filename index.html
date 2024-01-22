@@ -1,0 +1,536 @@
+<style>
+  body {
+    font-weight: bold;
+  }
+
+  .right-content2 {
+    background-color: #ffffff;
+  }
+
+  .tv_header {
+    display: flex;
+    justify-content: space-between; /* 요소 사이에 공간을 분배하여 정렬 */
+  }
+
+  .tv_header_text {
+    font-size: 15px;
+  }
+
+  .tv_header_refresh {
+    font-size: 20px;
+    color: red;
+  }
+  table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  tr {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .div_notice,
+  .div_po,
+  .div_remain {
+    display: inline-block;
+
+    margin-right: 1%;
+    vertical-align: top;
+  }
+  .div_plan,
+  .div_delv,
+  .div_delv_remain {
+    display: inline-block;
+
+    margin-right: 1%;
+    vertical-align: top;
+  }
+  #div_up_css {
+    overflow: auto;
+    display: flex;
+  }
+  #div_down_css {
+    margin-top: 20px;
+    overflow: auto;
+    display: flex;
+  }
+  .tv_header .select2 {
+    border: 1px solid #aaa;
+  }
+  .tv_header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #delv_plan_qty,
+  #delv_qty,
+  #delv_remain_qty {
+    min-width: 150px;
+  }
+
+  #notice_date0 {
+    white-space: nowrap;
+  }
+
+  #notice_title0 {
+    display: block;
+    min-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #po tr td:not(:first-child),
+  #remain tr td:not(:first-child) {
+    min-width: 90px;
+  }
+  #chart_diff_table tr td {
+    min-width: 50px;
+  }
+  .down_min_width {
+    min-width: 120px;
+  }
+  .down_min_width_sml {
+    min-width: 70px;
+  }
+</style>
+
+<div class="tv_header">
+  <div style="display: flex; justify-content: space-between">
+    <div>
+      <select id="cust_cd"></select>
+    </div>
+
+    <div class="right-tap-btn ajaxsetx" id="search">
+      <span class="right-btn-text"
+        ><i class="fa fa-search" aria-hidden="true"></i> 조회</span
+      >
+    </div>
+  </div>
+  <div id="remain_date" class="tv_header_text">
+    새로고침 잔여시간
+    <span id="refresh_time" class="tv_header_refresh"></span>
+  </div>
+</div>
+<div id="div_up_css">
+  <div class="div_notice">
+    <div style="display: flex; justify-content: space-between">
+      <span>[ 공지사항 ]</span>
+      <span id="last_notice"></span>
+    </div>
+    <table id="notice">
+      <tr>
+        <td>No</td>
+        <td>등록일시</td>
+        <td style="min-width: 220px">제목</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td id="notice_date0"></td>
+        <td id="notice_title0"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td id="notice_date1"></td>
+        <td id="notice_title1"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td id="notice_date2"></td>
+        <td id="notice_title2"></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td id="notice_date3"></td>
+        <td id="notice_title3"></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td id="notice_date4"></td>
+        <td id="notice_title4"></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td id="notice_date5"></td>
+        <td id="notice_title5"></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td id="notice_date6"></td>
+        <td id="notice_title6"></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td id="notice_date7"></td>
+        <td id="notice_title7"></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td id="notice_date8"></td>
+        <td id="notice_title8"></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td id="notice_date9"></td>
+        <td id="notice_title9"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="div_po">
+    <div style="display: flex; justify-content: space-between">
+      <span>[ 발주정보 ]</span>
+      <span id="last_po"></span>
+    </div>
+    <table id="po">
+      <tr>
+        <td>No</td>
+        <td>D-DAY</td>
+        <td>발주등록일</td>
+        <td>납기요청일</td>
+        <td>품번</td>
+        <td>품명</td>
+        <td>발주수량</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td id="po_dday0"></td>
+        <td id="po_createdate0"></td>
+        <td id="po_delv_req_date0"></td>
+        <td id="po_item_no0"></td>
+        <td id="po_item_name0"></td>
+        <td id="po_po_qty0"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td id="po_dday1"></td>
+        <td id="po_createdate1"></td>
+        <td id="po_delv_req_date1"></td>
+        <td id="po_item_no1"></td>
+        <td id="po_item_name1"></td>
+        <td id="po_po_qty1"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td id="po_dday2"></td>
+        <td id="po_createdate2"></td>
+        <td id="po_delv_req_date2"></td>
+        <td id="po_item_no2"></td>
+        <td id="po_item_name2"></td>
+        <td id="po_po_qty2"></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td id="po_dday3"></td>
+        <td id="po_createdate3"></td>
+        <td id="po_delv_req_date3"></td>
+        <td id="po_item_no3"></td>
+        <td id="po_item_name3"></td>
+        <td id="po_po_qty3"></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td id="po_dday4"></td>
+        <td id="po_createdate4"></td>
+        <td id="po_delv_req_date4"></td>
+        <td id="po_item_no4"></td>
+        <td id="po_item_name4"></td>
+        <td id="po_po_qty4"></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td id="po_dday5"></td>
+        <td id="po_createdate5"></td>
+        <td id="po_delv_req_date5"></td>
+        <td id="po_item_no5"></td>
+        <td id="po_item_name5"></td>
+        <td id="po_po_qty5"></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td id="po_dday6"></td>
+        <td id="po_createdate6"></td>
+        <td id="po_delv_req_date6"></td>
+        <td id="po_item_no6"></td>
+        <td id="po_item_name6"></td>
+        <td id="po_po_qty6"></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td id="po_dday7"></td>
+        <td id="po_createdate7"></td>
+        <td id="po_delv_req_date7"></td>
+        <td id="po_item_no7"></td>
+        <td id="po_item_name7"></td>
+        <td id="po_po_qty7"></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td id="po_dday8"></td>
+        <td id="po_createdate8"></td>
+        <td id="po_delv_req_date8"></td>
+        <td id="po_item_no8"></td>
+        <td id="po_item_name8"></td>
+        <td id="po_po_qty8"></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td id="po_dday9"></td>
+        <td id="po_createdate9"></td>
+        <td id="po_delv_req_date9"></td>
+        <td id="po_item_no9"></td>
+        <td id="po_item_name9"></td>
+        <td id="po_po_qty9"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="div_remain">
+    <div style="display: flex; justify-content: space-between">
+      <span>[ 미납품현황 ]</span>
+      <span id="last_remain"></span>
+    </div>
+    <table id="remain">
+      <tr>
+        <td>No</td>
+        <td>D-DAY</td>
+        <td>품번</td>
+        <td>품명</td>
+        <td>발주수량</td>
+        <td>입고수량</td>
+        <td>미납수량</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td id="remain_dday0"></td>
+        <td id="remain_item_no0"></td>
+        <td id="remain_item_name0"></td>
+        <td id="remain_po_qty0"></td>
+        <td id="remain_delv_qty0"></td>
+        <td id="remain_remain_qty0"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td id="remain_dday1"></td>
+        <td id="remain_item_no1"></td>
+        <td id="remain_item_name1"></td>
+        <td id="remain_po_qty1"></td>
+        <td id="remain_delv_qty1"></td>
+        <td id="remain_remain_qty1"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td id="remain_dday2"></td>
+        <td id="remain_item_no2"></td>
+        <td id="remain_item_name2"></td>
+        <td id="remain_po_qty2"></td>
+        <td id="remain_delv_qty2"></td>
+        <td id="remain_remain_qty2"></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td id="remain_dday3"></td>
+        <td id="remain_item_no3"></td>
+        <td id="remain_item_name3"></td>
+        <td id="remain_po_qty3"></td>
+        <td id="remain_delv_qty3"></td>
+        <td id="remain_remain_qty3"></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td id="remain_dday4"></td>
+        <td id="remain_item_no4"></td>
+        <td id="remain_item_name4"></td>
+        <td id="remain_po_qty4"></td>
+        <td id="remain_delv_qty4"></td>
+        <td id="remain_remain_qty4"></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td id="remain_dday5"></td>
+        <td id="remain_item_no5"></td>
+        <td id="remain_item_name5"></td>
+        <td id="remain_po_qty5"></td>
+        <td id="remain_delv_qty5"></td>
+        <td id="remain_remain_qty5"></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td id="remain_dday6"></td>
+        <td id="remain_item_no6"></td>
+        <td id="remain_item_name6"></td>
+        <td id="remain_po_qty6"></td>
+        <td id="remain_delv_qty6"></td>
+        <td id="remain_remain_qty6"></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td id="remain_dday7"></td>
+        <td id="remain_item_no7"></td>
+        <td id="remain_item_name7"></td>
+        <td id="remain_po_qty7"></td>
+        <td id="remain_delv_qty7"></td>
+        <td id="remain_remain_qty7"></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td id="remain_dday8"></td>
+        <td id="remain_item_no8"></td>
+        <td id="remain_item_name8"></td>
+        <td id="remain_po_qty8"></td>
+        <td id="remain_delv_qty8"></td>
+        <td id="remain_remain_qty8"></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td id="remain_dday9"></td>
+        <td id="remain_item_no9"></td>
+        <td id="remain_item_name9"></td>
+        <td id="remain_po_qty9"></td>
+        <td id="remain_delv_qty9"></td>
+        <td id="remain_remain_qty9"></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="div_down_css">
+  <div class="div_plan">
+    <table>
+      <tr>
+        <td rowspan="2" class="down_min_width">당월 납기예정</td>
+        <td class="down_min_width_sml">수량</td>
+        <td id="delv_plan_qty"></td>
+      </tr>
+      <tr>
+        <td>금액</td>
+        <td id="delv_plan_amount"></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div id="chart_plan"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="div_delv">
+    <table>
+      <tr>
+        <td rowspan="2" class="down_min_width">납품누계</td>
+        <td class="down_min_width_sml">수량</td>
+        <td id="delv_qty"></td>
+      </tr>
+      <tr>
+        <td>금액</td>
+        <td id="delv_amount"></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div id="chart_delv"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="div_delv_remain">
+    <table>
+      <tr>
+        <td rowspan="2" class="down_min_width">품목별<br />미납품누계</td>
+        <td class="down_min_width_sml">수량</td>
+        <td id="delv_remain_qty"></td>
+        <td rowspan="3">
+          <div style="display: flex; justify-content: space-between">
+            <span id="diff_title"></span>
+
+            <select id="search_type">
+              <option value="qty" selected>수량</option>
+              <option value="amount">금액</option>
+            </select>
+          </div>
+          <div id="chart_diff"></div>
+
+          <table id="chart_diff_table">
+            <tr>
+              <td>구분</td>
+              <td>4월</td>
+              <td>5월</td>
+              <td>6월</td>
+              <td>7월</td>
+              <td>8월</td>
+              <td>9월</td>
+              <td>10월</td>
+              <td>11월</td>
+              <td>12월</td>
+              <td>1월</td>
+              <td>2월</td>
+              <td>3월</td>
+              <td>계</td>
+            </tr>
+            <tr>
+              <td>발주</td>
+              <td id="m040"></td>
+              <td id="m050"></td>
+              <td id="m060"></td>
+              <td id="m070"></td>
+              <td id="m080"></td>
+              <td id="m090"></td>
+              <td id="m100"></td>
+              <td id="m110"></td>
+              <td id="m120"></td>
+              <td id="m010"></td>
+              <td id="m020"></td>
+              <td id="m030"></td>
+              <td id="msum0"></td>
+            </tr>
+            <tr>
+              <td>입고</td>
+              <td id="m041"></td>
+              <td id="m051"></td>
+              <td id="m061"></td>
+              <td id="m071"></td>
+              <td id="m081"></td>
+              <td id="m091"></td>
+              <td id="m101"></td>
+              <td id="m111"></td>
+              <td id="m121"></td>
+              <td id="m011"></td>
+              <td id="m021"></td>
+              <td id="m031"></td>
+              <td id="msum1"></td>
+            </tr>
+            <tr>
+              <td>미납</td>
+              <td id="m042"></td>
+              <td id="m052"></td>
+              <td id="m062"></td>
+              <td id="m072"></td>
+              <td id="m082"></td>
+              <td id="m092"></td>
+              <td id="m102"></td>
+              <td id="m112"></td>
+              <td id="m122"></td>
+              <td id="m012"></td>
+              <td id="m022"></td>
+              <td id="m032"></td>
+              <td id="msum2"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>금액</td>
+        <td id="delv_remain_amount"></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div id="chart_delv_remain"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
