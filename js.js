@@ -1,3 +1,7 @@
+const sreenHeight = window.screen.height;
+
+$(".right-content2").height(sreenHeight - 310);
+
 function getYearBasedOnMonth() {
   const now = new Date();
   const currentYear = now.getFullYear();
